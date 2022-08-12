@@ -60,18 +60,18 @@ export class LotLelangHomeComponent implements OnInit {
   constructor(private lelserve: LelangDataService, private token : TokenStorageService, private router: Router) {
 
   }
-  async lelsold(id:string){
+  // async lelsold(id:string){
     
-    await this.lelserve.is_bought(id).subscribe(()=>{
-      this.test.forEach((lel,index)=>{
-        if (lel.id === id){
-          this.test.splice(index,1)
-          this.dataSource = new MatTableDataSource(this.test)
-        }
-      })
-    })
+  //   await this.lelserve.is_bought(id).subscribe(()=>{
+  //     this.test.forEach((lel,index)=>{
+  //       if (lel.id === id){
+  //         this.test.splice(index,1)
+  //         this.dataSource = new MatTableDataSource(this.test)
+  //       }
+  //     })
+  //   })
 
-  }
+  // }
   ngOnInit(): void {
     this.getLelang()
   }
