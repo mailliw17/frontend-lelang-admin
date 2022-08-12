@@ -12,10 +12,10 @@
 - Type `git init`
 - Type `git status`
 - Type `git add .`
-- Type `git commit -m "your_first_commit"
+- Type `git commit -m "your_first_commit"`
 - Type `git remote add origin https://github.com/mailliw17/frontend-lelang.git`
-- Type `git branch` (MAKE SURE ONLY MASTER BRANCH)
-  > Note: MAKE SURE THE REPO IS CLEAN WITHOUT ANY CHANGES
+- Type `git branch`
+  > Note: MAKE SURE ONLY MASTER BRANCH
 - Type `git branch your_name`
 - Type `git checkout your_branch_name`
 - Type `git pull origin master`
