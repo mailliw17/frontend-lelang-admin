@@ -8,6 +8,7 @@ import { Input } from '@angular/core';
 import { LelangDataService } from 'src/app/_services/lelang-data.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { Router } from '@angular/router';
+import { SpinnerService } from '../../_services/spinner.service';
 
 export interface Lelang {
   id: string,
@@ -39,6 +40,16 @@ export interface Lelang {
   image5:any
 }
 
+export interface LelangDto {
+  id: string,
+  name: string,
+  initialPrice: number,
+  collateralQuantity: number,
+  organizerId: string,
+  sellerId: string,
+  lotCode: string,
+}
+
 @Component({
   selector: 'app-lot-lelang-home',
   templateUrl: './lot-lelang-home.component.html',
@@ -46,7 +57,7 @@ export interface Lelang {
 })
 
 export class LotLelangHomeComponent implements OnInit {
-  data: Lelang[] = [];
+  data: LelangDto[] = [];
   test: any[] = [];
   currentUser: any
 
@@ -57,11 +68,11 @@ export class LotLelangHomeComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private lelserve: LelangDataService, private token : TokenStorageService, private router: Router) {
+  constructor(private lelserve: LelangDataService, private token : TokenStorageService, private router: Router, public spinner: SpinnerService) {
 
   }
   // async lelsold(id:string){
-    
+
   //   await this.lelserve.is_bought(id).subscribe(()=>{
   //     this.test.forEach((lel,index)=>{
   //       if (lel.id === id){
@@ -73,23 +84,26 @@ export class LotLelangHomeComponent implements OnInit {
 
   // }
   ngOnInit(): void {
+    this.spinner.isLoading = true;
     this.getLelang()
   }
 
   getLelang():void {
     this.lelserve.getLelang().subscribe(lel => {
+      console.log(lel)
       var x: any = lel;
       this.test = x.content;
-      
-      this.test.forEach((lel)=>{
-        lel.organizer = lel.organizer.name
-        lel.seller = lel.seller.name
-       
-      })
+
+      // this.test.forEach((lel)=>{
+      //   lel.organizer = lel.organizer.name
+      //   lel.seller = lel.seller.name
+      // })
       this.dataSource = new MatTableDataSource(this.test)
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.spinner.isLoading = false;
     });
+
   }
 
   applyFilter(event: Event) {

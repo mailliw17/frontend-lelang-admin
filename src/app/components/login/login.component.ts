@@ -8,6 +8,7 @@ import { ProfileService } from 'src/app/_services/profile.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { User } from '../sidebar/user';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import Swal from 'sweetalert2';
 const PROFILE_API = 'http://10.1.137.50:8760/user/v1/';
 
 @Component({
@@ -79,8 +80,17 @@ export class LoginComponent implements OnInit {
         } else if (this.currentUser.role[0] == 'operator') {
           this.router.navigate(['/validasi-berkas']);
         } else if (this.currentUser.role[0] == 'user') {
-          alert('Akun anda tidak bisa masuk ke halaman ini');
           this.authService.logout();
+          this.tokenStorage.signOut();
+          // swal fire with button ok
+          Swal.fire({
+            title: 'Oops...',
+            text: 'Anda tidak memiliki akses!',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            this.reloadPage();
+          })
         }
       },
       (err) => {

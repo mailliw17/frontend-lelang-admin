@@ -1,1 +1,6 @@
 <router-outlet></router-outlet>
+<div *ngIf="spinner.isLoading" class="overlay">
+  <mat-spinner
+    color="primary" mode="indeterminate">
+  </mat-spinner>
+</div>

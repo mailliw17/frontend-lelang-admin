@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule } from '@angular/forms';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -52,6 +52,7 @@ import { AkunPenjualHomeComponent } from './components/akun-penjual-home/akun-pe
 import { AkunPenjualTambahComponent } from './components/akun-penjual-tambah/akun-penjual-tambah.component';
 import { AkunPenjualEditComponent } from './components/akun-penjual-edit/akun-penjual-edit.component';
 import { ValidasiBerkasCekComponent } from './components/validasi-berkas-cek/validasi-berkas-cek.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -106,6 +107,8 @@ import { ValidasiBerkasCekComponent } from './components/validasi-berkas-cek/val
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+    MatProgressSpinnerModule,
+    FontAwesomeModule,
 
   ],
   providers: [

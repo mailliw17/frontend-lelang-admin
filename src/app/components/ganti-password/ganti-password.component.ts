@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import Swal from 'sweetalert2';
 
 const CHANGE_PASSWORD_API = 'http://10.1.137.50:8760/user/v1/change-password'
 
@@ -21,7 +22,7 @@ export class GantiPasswordComponent implements OnInit {
       `Bearer ${this.token.getToken()}`
     )
   }
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
@@ -42,14 +43,22 @@ export class GantiPasswordComponent implements OnInit {
     if (this.gantiPasswordForm.valid){
     this.http.post<any>(CHANGE_PASSWORD_API, this.gantiPasswordForm.value, this.httpOptions_base)
     .subscribe(isi => {
-      alert("Change password success")
+      Swal.fire({
+        title: 'Success',
+        text: 'Change Password Success',
+        icon: 'success'
+      })
       this.gantiPasswordForm.reset()
 
       this.token.signOut() //clean session in FE
       this.router.navigate(['/login'])
     },
       err => {
-        alert(err.error.message)
+        Swal.fire({
+          title: 'Error',
+          text: err.error.message,
+          icon: 'error'
+        })
         this.ngOnInit()
       }
     )
