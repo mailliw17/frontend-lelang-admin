@@ -5,6 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { SpinnerService } from '../../_services/spinner.service';
+import Swal from 'sweetalert2';
 
 const READ_API = 'http://10.1.137.50:8760/admin/v1/getAll?role=seller'
 const DELETE_API = 'http://10.1.137.50:8760/admin/v1/delete/'
@@ -34,10 +36,12 @@ export class AkunPenjualHomeComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private token: TokenStorageService
+    private token: TokenStorageService,
+    public spinner: SpinnerService
   ) { }
 
   ngOnInit(): void {
+    this.spinner.isLoading = true;
     this.getAllData()
   }
 
@@ -56,22 +60,37 @@ export class AkunPenjualHomeComponent implements OnInit {
         this.dataSource = new MatTableDataSource(isi.content)
         this.dataSource.paginator = this.paginator
         this.dataSource.sort = this.sort
+        this.spinner.isLoading = false;
       },
         err => {
-          alert("Something went wrong")
+          this.spinner.isLoading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
           console.log(err)
         }
       )
   }
 
   deleteSeller(id: string) {
+
     this.http.delete<any>(DELETE_API + id, this.httpOptions_base)
       .subscribe(isi => {
-        alert("Data Deleted")
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Data berhasil dihapus',
+        })
         this.getAllData()
       },
         err => {
-          alert("Error while deleting")
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
           console.log(err)
         }
       )

@@ -3,7 +3,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { BranchDataService } from 'src/app/_services/branch-data.service';
+import { SpinnerService } from 'src/app/_services/spinner.service';
+import Swal from 'sweetalert2';
 
 export interface Branch {
   id: string,
@@ -29,6 +32,8 @@ export interface Branch {
   styleUrls: ['./cabang-penjual-home.component.css']
 })
 export class CabangPenjualHomeComponent implements OnInit {
+  faEdit = faPencilAlt;
+  faDelete = faTrash;
   branches: Branch[] = [];
   displayedColumns: string[] = [ 'name', 'address', 'initial', 'seller', 'province', 'type', 'action'];
   dataSource = new MatTableDataSource(this.branches);
@@ -36,21 +41,44 @@ export class CabangPenjualHomeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  //DI 
-  constructor(private branchserv: BranchDataService, private router:Router) {
-  }
+  //DI
+  constructor(
+    private branchserv: BranchDataService,
+    private router:Router,
+    public spinner: SpinnerService
+  ) { }
 
- 
+
 
   deleteBranch(id: string) {
-    this.branchserv.deleteBranch(id).subscribe(()=>{
-     this.getBranch()
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.branchserv.deleteBranch(id).subscribe(()=>{
+          this.getBranch()
+         })
+      } else {
+        Swal.fire(
+          'Cancelled',
+          'Your seller file is safe :)',
+          'error'
+        )
+      }
     })
+
   }
 
   ngOnInit(): void {
+    this.spinner.isLoading = true
     this.getBranch();
-    
+
   }
 
   getBranch() : void {
@@ -60,9 +88,10 @@ export class CabangPenjualHomeComponent implements OnInit {
       this.branches.forEach((branch)=>{
         this.branchserv.getSellerId(branch.seller).subscribe(sel=>{
           branch.seller = sel.name
-         
+          this.spinner.isLoading = false
         },err=>{
           branch.seller = 'PENJUAL DELETED'
+          this.spinner.isLoading = false
         })
       })
       this.dataSource = new MatTableDataSource(this.branches)

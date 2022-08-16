@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import Swal from 'sweetalert2';
 
 const CREATE_API = 'http://10.1.137.50:8760/admin/v1/createSeller'
 
@@ -48,12 +49,20 @@ export class AkunPenjualTambahComponent implements OnInit {
     if (this.createSellerAccountForm.valid){
       this.http.post<any>(CREATE_API, this.createSellerAccountForm.value, this.httpOptions_base)
         .subscribe(isi => {
-          alert("Date created success")
+          Swal.fire({
+            title: 'Success',
+            text: 'Create Success',
+            icon: 'success'
+          })
           this.createSellerAccountForm.reset()
           this.router.navigate(['akun-penjual'])
         },
           err => {
-            alert("Something went wrong")
+            Swal.fire({
+              title: 'Error',
+              text: 'Create Failed',
+              icon: 'error'
+            })
             console.log(err)
           }
         )

@@ -4,6 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { FAQDataService } from 'src/app/_services/faqdata.service';
+import { SpinnerService } from '../../_services/spinner.service';
+import Swal from 'sweetalert2';
+import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 
 export interface FAQ {
@@ -27,6 +30,8 @@ export interface FAQ {
   styleUrls: ['./faq-home.component.css']
 })
 export class FaqHomeComponent implements OnInit {
+  faEdit = faPencilAlt;
+  faDelete = faTrash;
   faq_array: FAQ[] = [];
   displayedColumns: string[] = ['question', 'answer', 'action'];
   dataSource = new MatTableDataSource(this.faq_array);
@@ -35,16 +40,34 @@ export class FaqHomeComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private faqserv: FAQDataService ,private route:Router) { }
+  constructor(private faqserv: FAQDataService ,private route:Router, public spinner:SpinnerService) { }
 
   deleteFAQ(id: string) {
-    console.log(id)
-    this.faqserv.deleteFAQ(id).subscribe(()=>{
-      this.getFAQ()
-    })
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.faqserv.deleteFAQ(id).subscribe(()=>{
+          this.getFAQ()
+        });
+      } else {
+        Swal.fire(
+          'Cancelled',
+          'Your FAQ is safe :)',
+          'error'
+        )
+      }
+    });
   }
 
   ngOnInit(): void {
+    this.spinner.isLoading = true;
     this.getFAQ()
   }
 
@@ -56,6 +79,7 @@ export class FaqHomeComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.faq_array)
       this.dataSource.paginator = this.paginator
       this.dataSource.sort = this.sort
+      this.spinner.isLoading = false;
     })
   }
 

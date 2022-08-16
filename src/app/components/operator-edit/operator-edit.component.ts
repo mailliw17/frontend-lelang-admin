@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { Operator } from '../operator-home/operator';
+import Swal from 'sweetalert2';
 
 const GET_OPERATOR_BYID_API = 'http://10.1.137.50:8080/auth/user/v1/'
 const UPDATE_OPERATOR_API = 'http://10.1.137.50:8760/user/v1/update/'
@@ -21,7 +22,7 @@ export class OperatorEditComponent implements OnInit {
     email: new FormControl(''),
     phoneNum: new FormControl(''),
     dateOb: new FormControl(''),
-    
+
   });
   editOperatorForm: any = {};
   // public editOperatorForm !: FormGroup
@@ -63,7 +64,11 @@ export class OperatorEditComponent implements OnInit {
         this.editOperatorForm = isi
       },
         err => {
-          alert("Error while fetching")
+          Swal.fire({
+            title: 'Error',
+            text: err.error.message,
+            icon: 'error'
+          })
           console.log(err)
         }
       )
@@ -77,11 +82,15 @@ export class OperatorEditComponent implements OnInit {
     this.http.put<any>(UPDATE_OPERATOR_API + id, this.editOperatorForm, this.httpOptions_base)
       .subscribe(
         isi => {
-          
+
           this.router.navigate(['/akun-operator'])
         },
         err => {
-          alert(err.error.message)
+          Swal.fire({
+            title: 'Error',
+            text: err.error.message,
+            icon: 'error'
+          })
           console.log(err)
         }
       )

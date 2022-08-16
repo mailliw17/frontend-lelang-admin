@@ -7,13 +7,14 @@ import { Branch } from '../cabang-penjual-home/cabang-penjual-home.component';
 import { LelangDataService } from 'src/app/_services/lelang-data.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
 
 
 
 function validatedate(c:FormControl){
   var now = new Date();
   var dt = new Date( c.value)
-  
+
   return dt>now ? null : {
     validatedate: {
       tooearly: false
@@ -28,29 +29,31 @@ function validatedate(c:FormControl){
 })
 export class LotLelangEditComponent implements OnInit {
   validateall(form: FormGroup) {
- 
-   
+
+
     var a:any = this.Leledit.controls['leljoinenddate']?.value //waktu selesai lelang
     var b:any = this.Leledit.controls['lelbidstart']?.value //waktu mulai lelang
     var c:any = this.Leledit.controls['lelenddate']?.value //batas akhir jaminan
+
+
     if (a === ''||b===''||c==''){
       return null
     }
     var dta = new Date(a)
     var dtb = new Date(b)
     var dtc = new Date(c)
-   
-    
-    var f:boolean =  (dtc < dta) && (dtc< dtb) && (dtb > dtc) && (dtb < dta) && (dta > dtb) && (dta > dtc)
-  
+
+
+    var f:boolean =  (dtc < dta) && (dtb > dtc) && (dtb < dta)
+
     return f ? null : {
       validateall: {
         valid: false
       }
-      
+
     }
   }
- 
+
   selected = 'domain';
   Leledit: FormGroup= new FormGroup({
     lelname:  new FormControl(''),
@@ -66,7 +69,7 @@ export class LotLelangEditComponent implements OnInit {
     desc:  new FormControl(''),
     lelattachment: new FormControl(''),
     imginp:new FormControl(''),
-    
+
   });
   leleditform(){
     this.Leledit = this.fb.group({
@@ -83,11 +86,11 @@ export class LotLelangEditComponent implements OnInit {
       desc:  ['', Validators.required],
       lelattachment: [''],
       imginp:[''],
-     
+
     })
   }
 
-  constructor(private fb:FormBuilder, private route: ActivatedRoute, private lelserv: LelangDataService, private router: Router,private domSanitizer: DomSanitizer) 
+  constructor(private fb:FormBuilder, private route: ActivatedRoute, private lelserv: LelangDataService, private router: Router,private domSanitizer: DomSanitizer)
   {this.leleditform(); }
   org_array: Organizer[] = [];
   seller_array: Seller[] = [];
@@ -102,46 +105,46 @@ export class LotLelangEditComponent implements OnInit {
   async imagelooper(imgs:any[]){
     for (var x in imgs){
 
-     
+
       var z:any=  await this.lelserv.filegetterimg(imgs[x]).then((t)=>{
         var file = new File([t],"name")
         this.tempimg.push(file)
-        
-      })
-      
-        
-      
-     
-        
-        
 
-      
+      })
+
+
+
+
+
+
+
+
   }}
 
   getLel() {
     var str = new String('')
     const id = String(this.route.snapshot.paramMap.get('id'))
     this.lelserv.getLelbyId(id).subscribe(lel => {
-      
+
 
       this.lelang = lel;
       this.lelserv.filegetter(this.lelang.attachment).subscribe(attach=>{
         this.attachment = new File([attach],"attachment")
-        
+
       })
-      
+
       this.displayattachment = this.lelang.attachment
-      
+
       this.tempbranch = this.lelang.branch
-      
+
       var imgs:string[] = [this.lelang.imageURL1,this.lelang.imageURL2,this.lelang.imageURL3,this.lelang.imageURL4,this.lelang.imageURL5]
       imgs = imgs.filter(x=> x!== null)
-  
+
       this.imagelooper(imgs)
 
       this.images = imgs
-     
-      
+
+
       str = this.lelang.bidExpire
       var x = new Date (this.lelang.bidExpire)
       str = new Date( x.setHours(x.getHours()+7)).toISOString()
@@ -165,9 +168,9 @@ export class LotLelangEditComponent implements OnInit {
       this.lelserv.getBranch(this.lelang.seller.id).subscribe(branch => {
         var z: any = branch
         this.branch_array = z.content
-        
+
         this.Leledit.patchValue({
-        
+
           lelname:  this.lelang.name,
           lelinitialprice:  this.lelang.initialPrice,
           lelbidtype: this.lelang.bidMethod,
@@ -179,16 +182,16 @@ export class LotLelangEditComponent implements OnInit {
           lelseller:  this.lelang.seller.id,
           lelbranch: this.lelang.branch.id,
           desc: this.lelang.description,
-          
-          
+
+
         })
 
       })
- 
+
     })
 
   }
-  
+
 
 
 
@@ -203,11 +206,11 @@ export class LotLelangEditComponent implements OnInit {
       this.seller_array = y.content
 
     })
-   
+
   }
   updateBranch(){
     var sellerid: any = this.Leledit.value.lelseller.id
-  
+
     this.lelserv.getBranch(sellerid).subscribe(branch => {
       var z: any = branch
       this.branch_array = z.content
@@ -219,10 +222,10 @@ export class LotLelangEditComponent implements OnInit {
       }
 
     })
-    
+
   }
   update(leleditform:any) {
-    
+
     if (leleditform.valid){
     var newlel: Lelang = {
       id: this.lelang.id,
@@ -259,7 +262,7 @@ export class LotLelangEditComponent implements OnInit {
     newlel.bidStart= x.setSeconds(x.getSeconds() ).toString()
     var z = new Date(newlel.collateralExpire)
     newlel.collateralExpire = z.setSeconds(z.getSeconds()).toString()
-    
+
     if (newlel.sellerId === ''|| newlel.sellerId  === undefined){
       newlel.sellerId = this.lelang.seller.id
     }
@@ -269,9 +272,9 @@ export class LotLelangEditComponent implements OnInit {
     if (newlel.branchId === ''|| newlel.branchId === undefined){
       newlel.branchId = this.lelang.branch.id
     }
-    
-    
-   
+
+
+
     this.lelserv.updateLel(this.lelang.id, newlel, this.tempimg, this.attachment)
       .subscribe(
         lel => {
@@ -280,28 +283,33 @@ export class LotLelangEditComponent implements OnInit {
         },
         err => {
           alert("Error update data")
+          console.log(err)
         })
       }
       else{
         this.Leledit.markAllAsTouched();
       }
   }
-  
-  
+
+
   imagesdeleter(index:any, first:any, last:any, len:any){
-    
+
     if (first != true || last != true){
-    
+
       this.images.splice(index, 1)
       this.tempimg.splice(index,1)
-   
+
     }else{
-      alert('At least one picture is required')
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'At least one picture is required',
+      })
     }
- 
-    
+
+
   }
- 
+
   onAttachmentChange(event:any){
     if (event.target.files && event.target.files[0]) {
     if (event.target.files.length ===1) {
@@ -312,39 +320,43 @@ export class LotLelangEditComponent implements OnInit {
 
     }
 
-    
+
   }
 }
   onFileChange(event:any) {
-    
+
     if (event.target.files && event.target.files[0]) {
-     
+
         var filesAmount = event.target.files.length;
         if (filesAmount + this.images.length < 6){
         for (let i = 0; i < filesAmount; i++) {
-          
+
                 var reader = new FileReader();
-    
+
                 reader.onload = (event:any) => {
-                  
-                  
-                  
-                   this.images.push(event.target.result); 
-    
+
+
+
+                   this.images.push(event.target.result);
+
                    this.Leledit.patchValue({
                       fileSource: this.images
                    });
                 }
-               
+
                reader.readAsDataURL(event.target.files[i]);
-              
+
                this.tempimg.push(event.target.files[i])
-              
+
               }
-              
+
       }else{
         this.Leledit.controls['imginp'].setErrors({'incorrect':true})
-        alert('Maximum of 5 images allowed')
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Maximum 5 pictures are allowed',
+        })
       }
     }
   }
@@ -353,8 +365,8 @@ export class LotLelangEditComponent implements OnInit {
 
     this.get_lists();
     this.getLel();
-   
-   
+
+
 
   }
 

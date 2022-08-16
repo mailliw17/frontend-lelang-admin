@@ -13,7 +13,7 @@ import { DATE_PIPE_DEFAULT_TIMEZONE } from '@angular/common';
 function validatedate(c:FormControl){
   var now = new Date();
   var dt = new Date( c.value)
-  
+
   return dt>now ? null : {
     validatedate: {
       tooearly: false
@@ -29,34 +29,36 @@ function validatedate(c:FormControl){
 
 export class LotLelangTambahComponent implements OnInit {
   validateall(form: FormGroup) {
- 
-   
+
+
     var a:any = this.Leladd.controls['leljoinenddate']?.value //waktu selesai lelang
     var b:any = this.Leladd.controls['lelbidstart']?.value //waktu mulai lelang
     var c:any = this.Leladd.controls['lelenddate']?.value //batas akhir jaminan
+
+
     if (a === ''||b===''||c==''){
       return null
     }
     var dta = new Date(a)
     var dtb = new Date(b)
     var dtc = new Date(c)
-   
-    
-    var f:boolean =  (dtc < dta) && (dtc< dtb) && (dtb > dtc) && (dtb < dta) && (dta > dtb) && (dta > dtc)
-  
+
+
+    var f:boolean =  (dtc < dta) && (dtb > dtc) && (dtb < dta)
+
     return f ? null : {
       validateall: {
         valid: false
       }
-      
+
     }
   }
-    
+
   progress: number=0;
   images : string[] = [];
   tempimg:any[] = [];
   attachment:any = {};
-  
+
   Leladd: FormGroup= new FormGroup({
     lelname:  new FormControl(''),
     lelinitialprice:  new FormControl(''),
@@ -71,7 +73,7 @@ export class LotLelangTambahComponent implements OnInit {
     desc:  new FormControl(''),
     lelattachment: new FormControl(''),
     imginp:new FormControl(''),
-    
+
   });
   leladdform(){
     this.Leladd = this.fb.group({
@@ -88,46 +90,46 @@ export class LotLelangTambahComponent implements OnInit {
       desc:  ['', Validators.required],
       lelattachment: ['', Validators.required],
       imginp:['',Validators.required],
-     
+
     })
   }
-  
+
   onAttachmentChange(event:any){
-   
+
     if (event.target.files.length ===1) {
       this.attachment =(event.target.files[0])
-      
 
-    
+
+
   }
 }
   onFileChange(event:any) {
-    
+
     if (event.target.files && event.target.files[0]) {
       this.images = [];
       this.tempimg = [];
         var filesAmount = event.target.files.length;
         if (filesAmount <6){
         for (let i = 0; i < filesAmount; i++) {
-          
+
                 var reader = new FileReader();
-    
+
                 reader.onload = (event:any) => {
-                  
-                  
-                  
-                   this.images.push(event.target.result); 
-    
+
+
+
+                   this.images.push(event.target.result);
+
                    this.Leladd.patchValue({
                       fileSource: this.images
                    });
                 }
-               
+
                reader.readAsDataURL(event.target.files[i]);
                this.tempimg.push(event.target.files[i])
-              
+
               }
-              
+
       }else{
         this.Leladd.controls['imginp'].setErrors({'incorrect':true})
       }
@@ -137,7 +139,7 @@ export class LotLelangTambahComponent implements OnInit {
   org_array: Organizer[] = [];
   seller_array: Seller[] = [];
   branch_array: Branch[] = [];
-  constructor(private fb: FormBuilder, private lelserv: LelangDataService, private router: Router) 
+  constructor(private fb: FormBuilder, private lelserv: LelangDataService, private router: Router)
   {this.leladdform(); }
 
 
@@ -146,7 +148,7 @@ export class LotLelangTambahComponent implements OnInit {
   add(leladdform:any): void {
     //missing lampiran, and branch stuff
     if (leladdform.valid){
-      
+
     var newlel: Lelang = {
       id: "null",
       name: leladdform.value.lelname,
@@ -183,7 +185,7 @@ export class LotLelangTambahComponent implements OnInit {
     newlel.bidStart= x.setSeconds(x.getSeconds()).toString()
     var z = new Date(newlel.collateralExpire)
     newlel.collateralExpire = z.setSeconds(z.getSeconds()).toString()
-   
+
     console.log(newlel)
     this.lelserv.AddLelang(newlel, this.tempimg,this.attachment)
       .subscribe(
@@ -208,12 +210,12 @@ export class LotLelangTambahComponent implements OnInit {
       var y: any = seller
       this.seller_array = y.content
     })
-    
+
 
   }
   updateBranch(){
     var sellerid: any = this.Leladd.value.lelseller.id
-  
+
     this.lelserv.getBranch(sellerid).subscribe(branch => {
       var z: any = branch
       this.branch_array = z.content
@@ -221,7 +223,7 @@ export class LotLelangTambahComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-    
+
     this.get_lists();
   }
 

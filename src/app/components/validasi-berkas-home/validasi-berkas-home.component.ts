@@ -4,7 +4,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { SpinnerService } from 'src/app/_services/spinner.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import Swal from 'sweetalert2';
 
 const GET_ALL_API = 'http://10.1.137.50:8761/approval/getAll'
 
@@ -33,10 +35,12 @@ export class ValidasiBerkasHomeComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private token: TokenStorageService
+    private token: TokenStorageService,
+    private spinner: SpinnerService
   ) { }
 
   ngOnInit(): void {
+    this.spinner.isLoading = true
     this.getAllData()
   }
 
@@ -55,9 +59,15 @@ export class ValidasiBerkasHomeComponent implements OnInit {
         this.dataSource = new MatTableDataSource(isi.content)
         this.dataSource.paginator = this.paginator
         this.dataSource.sort = this.sort
+        this.spinner.isLoading = false
       },
         err => {
-          alert("Something went wrong")
+          this.spinner.isLoading = false
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
           console.log(err)
         }
       )

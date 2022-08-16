@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { TokenStorageService } from './_services/token-storage.service';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 // import Validation from './utils/validation';
+import { SpinnerService } from './_services/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,6 @@ import { TokenStorageService } from './_services/token-storage.service';
 })
 export class AppComponent {
   title = 'real-estate-admin'
+
+  constructor(public spinner: SpinnerService) {  }
 }

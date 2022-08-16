@@ -21,7 +21,7 @@ export class FaqTambahComponent implements OnInit {
     })
   }
 
-  constructor(private fb:FormBuilder,private faqserv: FAQDataService, private router: Router) 
+  constructor(private fb:FormBuilder,private faqserv: FAQDataService, private router: Router)
   { this.faqaddform(); }
 
   add(faqform:any) {

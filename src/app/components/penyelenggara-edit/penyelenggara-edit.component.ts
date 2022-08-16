@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { Organizer } from '../penyelenggara-home/penyelenggara-home.component';
+import Swal from 'sweetalert2';
 
 const GET_ORGANIZER_BYID_API = 'http://10.1.137.50:8762/get/'
 const UPDATE_ORGANIZER_API = 'http://10.1.137.50:8762/update/'
@@ -20,8 +21,8 @@ export class PenyelenggaraEditComponent implements OnInit {
     fax: new FormControl(''),
     name: new FormControl(''),
     phoneNum: new FormControl(''),
-   
-    
+
+
   });
   editOrganizerForm: any = {}
 
@@ -61,8 +62,11 @@ export class PenyelenggaraEditComponent implements OnInit {
         this.curorg = isi
       },
         err => {
-          alert("Error while fetching")
-         
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
         }
       )
   }
@@ -73,12 +77,15 @@ export class PenyelenggaraEditComponent implements OnInit {
     this.http.put<any>(UPDATE_ORGANIZER_API + id, this.editOrganizerForm, this.httpOptions_base)
       .subscribe(
         isi => {
-          
+
           this.router.navigate(['/penyelenggara'])
         },
         err => {
-          alert(err.error.message)
-         
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.error.message,
+          })
         }
       )
     }

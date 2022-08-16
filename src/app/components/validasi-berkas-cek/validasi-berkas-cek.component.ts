@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import Swal from 'sweetalert2';
 
 const GET_DATA_KTP ='http://10.1.137.50:8761/ktp/user/'
 const APPROVED_KTP = 'http://10.1.137.50:8761/approved/ktp/'
@@ -50,10 +51,14 @@ export class ValidasiBerkasCekComponent implements OnInit {
     .subscribe(isi => {
       // console.log(isi)
       this.ktpData = isi
-      
+
     },
     err => {
-      alert("Error while fetching data KTP")
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "Error while fetching data KTP",
+      })
       console.log(err)
     }
     )
@@ -67,7 +72,11 @@ export class ValidasiBerkasCekComponent implements OnInit {
       // console.log(isi)
     },
     err => {
-      alert("Error while fetching data NPWP")
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "Error while fetching data NPWP",
+      })
       console.log(err)
     }
     )
@@ -128,7 +137,7 @@ export class ValidasiBerkasCekComponent implements OnInit {
         }
       )
     }
-    // EOF NPWP validation 
+    // EOF NPWP validation
 
     this.router.navigate(['validasi-berkas'])
   }

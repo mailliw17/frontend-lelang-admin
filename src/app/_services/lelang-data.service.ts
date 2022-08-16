@@ -22,18 +22,19 @@ export class LelangDataService {
     )
   }
   //private url_base="http://10.1.137.50:8080/auction-object/getAll";
-  private url_base = "http://10.1.137.220:8766/getAll?size=100";
+  private url_base = "http://10.1.137.50:8766/getAll?size=100";
+  private url_base_admin = "http://10.1.137.50:8766/getAllAdmin?size=100";
 
   constructor(private httpClient: HttpClient, private token: TokenStorageService) { }
 
-  private url_bought = "http://10.1.137.220:8766/buy/"
+  private url_bought = "http://10.1.137.50:8766/buy/"
   private url_org = "http://10.1.137.50:8762/getAll";
   private url_branchbysel = "http://10.1.137.50:8764/getAll/seller/"
-  private url_create = "http://10.1.137.220:8766/create"
-  private url_delete = "http://10.1.137.220:8766/delete/"
-  private url_update = "http://10.1.137.220:8766/update/"
+  private url_create = "http://10.1.137.50:8766/create"
+  private url_delete = "http://10.1.137.50:8766/delete/"
+  private url_update = "http://10.1.137.50:8766/update/"
   private url_seller = "http://10.1.137.50:8763/getAll"
-  private url_byid = "http://10.1.137.220:8766/get/"
+  private url_byid = "http://10.1.137.50:8766/get/"
   lel_list: Lelang[] = [];
   httpOptions_base = {
     headers: new HttpHeaders().set(
@@ -45,12 +46,9 @@ export class LelangDataService {
   httpOption_Create_Update = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
+
   getLelang(): Observable<any[]> {
-
-
-
-
-    return this.httpClient.get<any[]>(this.url_base, this.httpOptions_base)
+    return this.httpClient.get<any[]>(this.url_base_admin + "&image=false", this.httpOptions_base)
   }
 
   deleteLelang(id: string):any {
@@ -61,22 +59,22 @@ export class LelangDataService {
     var temp: any = newlel
     delete temp['isActive']
     delete temp['is_bought']
-    
+
     var formData: any = new FormData();
-   
-    
+
+
 
     for (var i =1; i< tempimg.length+1;i++){
       var str = new String('image').concat(i.toString())
       formData.append(str.toString(), tempimg[i-1]);
-    
-      
+
+
     }
-   
-   
+
+
     formData.append("auctionObjectString", JSON.stringify(temp));
     formData.append("attachment", attachment)
-   
+
     return this.httpClient.post<Lelang>(this.url_create, formData, this.httpOptions_base)
 
 
@@ -96,7 +94,7 @@ export class LelangDataService {
   }
   getLelbyId(id: string): Observable<any> {
     var url = this.url_byid.toString().concat(id)
-    
+
     return this.httpClient.get<any>(url, this.httpOptions_base)
   }
 
@@ -112,19 +110,19 @@ export class LelangDataService {
     delete temp['isActive']
     delete temp['is_bought']
     var url = this.url_update.toString().concat(id)
-  
+
     var formData: any = new FormData();
-    
-    
+
+
 
     for (var i =1; i< tempimg.length+1;i++){
       var str = new String('image').concat(i.toString())
       formData.append(str.toString(), tempimg[i-1]);
-    
-      
+
+
     }
-   
-   
+
+
     formData.append("auctionObjectString", JSON.stringify(temp));
     formData.append("attachment", attachment)
 
@@ -139,7 +137,7 @@ export class LelangDataService {
   is_bought(id:string):Observable<any>{
     var url = this.url_bought.concat(id)
     return this.httpClient.put(url, this.httpOptions_base)
-   
+
   }
 }
 

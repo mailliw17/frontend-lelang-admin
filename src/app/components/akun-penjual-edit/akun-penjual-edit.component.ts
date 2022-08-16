@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import Swal from 'sweetalert2';
 
 const GET_BYID_API = 'http://10.1.137.50:8080/auth/user/v1/'
 const UPDATE_API = 'http://10.1.137.50:8760/user/v1/update/'
@@ -20,7 +21,7 @@ export class AkunPenjualEditComponent implements OnInit {
     email: new FormControl(''),
     phoneNum: new FormControl(''),
     dateOb: new FormControl(''),
-    
+
   });
   editSellerForm: any = {};
   // public editOperatorForm !: FormGroup
@@ -43,7 +44,7 @@ export class AkunPenjualEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.editSellerAccountForm = this.formBuilder.group({
-  
+
       firstName: ['',Validators.required],
       lastName: ['',Validators.required],
       username: ['',Validators.required],
@@ -63,7 +64,11 @@ export class AkunPenjualEditComponent implements OnInit {
         this.editSellerForm = isi
       },
         err => {
-          alert("Error while fetching")
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
           console.log(err)
         }
       )
@@ -76,15 +81,24 @@ export class AkunPenjualEditComponent implements OnInit {
     this.http.put<any>(UPDATE_API + id, this.editSellerForm, this.httpOptions_base)
       .subscribe(
         isi => {
-          alert('Data updated')
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Update Success',
+          })
           this.router.navigate(['/akun-penjual'])
         },
         err => {
-          alert('Error while updating')
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          })
+
           console.log(err)
         }
       )
-  
+
   }else{
     this.editSellerAccountForm.markAllAsTouched();
   }

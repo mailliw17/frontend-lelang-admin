@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import Swal from 'sweetalert2';
 
 const CREATE_ORGANIZER_API = 'http://10.1.137.50:8762/create'
 
@@ -43,12 +44,20 @@ export class PenyelenggaraTambahComponent implements OnInit {
     this.http.post<any>(CREATE_ORGANIZER_API, this.createOrganizerForm.value, this.httpOptions_base)
       .subscribe(
         isi => {
-          alert("Organizer created")
+          Swal.fire({
+            title: 'Success',
+            text: 'Data berhasil ditambahkan',
+            icon: 'success',
+          })
           this.createOrganizerForm.reset()
           this.router.navigate(['penyelenggara'])
         },
         err => {
-          alert("Error when creating")
+          Swal.fire({
+            title: 'Error',
+            text: 'Data gagal ditambahkan',
+            icon: 'error',
+          })
           console.log(err)
         }
       )

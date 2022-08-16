@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { ProfileService } from 'src/app/_services/profile.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import Swal from 'sweetalert2';
 // import { Operator } from '../operator-home/operator-home.component';
 
 const CREATE_OPERATOR_API = 'http://10.1.137.50:8760/admin/v1/createOperator'
@@ -23,10 +24,10 @@ export class OperatorTambahComponent implements OnInit {
     scdPassword: new FormControl(''),
     phoneNum: new FormControl(''),
     dateOb: new FormControl(''),
-    
+
   });
-  
-  
+
+
   // isiForm!: string
 
   // token for get anything data
@@ -61,14 +62,20 @@ export class OperatorTambahComponent implements OnInit {
     if (this.createOperatorForm.valid){
       this.http.post<any>(CREATE_OPERATOR_API, this.createOperatorForm.value, this.httpOptions_base)
         .subscribe(isi => {
-          alert("Register new operator success")
+          Swal.fire({
+            title: 'Success',
+            text: 'Create Operator Success',
+            icon: 'success'
+          })
           this.createOperatorForm.reset()
           this.router.navigate(['akun-operator'])
         },
           err => {
-            alert(err.error.message)
-           
-          
+            Swal.fire({
+              title: 'Error',
+              text: err.error.message,
+              icon: 'error'
+            })
           }
         )
     }
