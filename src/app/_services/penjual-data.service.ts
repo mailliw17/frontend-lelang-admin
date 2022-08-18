@@ -39,7 +39,7 @@ export class PenjualDataService {
 
   deleteSeller(id: string): any {
     var url = this.url_delete.toString().concat(id)
-    
+
     return this.httpClient.delete(url, this.httpOptions_base)
   }
 
@@ -49,7 +49,7 @@ export class PenjualDataService {
   }
   getSellerbyId(id: string): Observable<Seller> {
     var url = this.url_byid.toString().concat(id)
-    
+
     return this.httpClient.get<any>(url, this.httpOptions_base)
   }
 

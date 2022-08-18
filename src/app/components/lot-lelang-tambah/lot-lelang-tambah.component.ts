@@ -223,7 +223,6 @@ export class LotLelangTambahComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-
     this.get_lists();
   }
 

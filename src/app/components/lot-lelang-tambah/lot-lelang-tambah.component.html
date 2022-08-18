@@ -109,7 +109,7 @@
                                                 Lelang Batas Akhir Jaminan Lelang must be after current time.
                                             </div>
                                         </div>
-                                    </div>  
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="example-date-input" class="form-control-label">Waktu Selesai Lelang</label>
@@ -161,7 +161,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="exampleFormControlSelect1">Penjual</label>
-                                            <select class="form-control" name="selleropt" #lelseller (change)="updateBranch()" formControlName="lelseller"> 
+                                            <select class="form-control" name="selleropt" #lelseller (change)="updateBranch()" formControlName="lelseller">
                                                 <option value="" selected disabled (ngModel)="seller_array">--SILAHKAN
                                                     PILIH--</option>
                                                 <option *ngFor="let seller of seller_array" [ngValue]="seller"
@@ -182,7 +182,7 @@
                                                 <option value="" selected disabled (ngModel)="branch_array">--SILAHKAN
                                                     PILIH--</option>
                                                 <option *ngFor="let branch of branch_array" [ngValue]="branch"
-                                                    label="{{branch.name}}">{{branch.id}}</option>
+                                                    label="{{branch.name}}" style="text-transform: uppercase;">{{branch.id}}</option>
                                             </select>
                                         </div>
                                         <div *ngIf="Leladd.controls['lelbranch'].invalid && Leladd.controls['lelbranch'].touched" class="alert alert-danger">
@@ -205,12 +205,12 @@
 
                                 <div class="form-group">
                                     <label for="file">Gambar (Max 1 MB/Gambar)</label>
-                                    <input 
+                                    <input
                                         formControlName="imginp"
-                                        id="file" 
-                                        type="file" 
+                                        id="file"
+                                        type="file"
                                         class="form-control"
-                                        multiple="" 
+                                        multiple=""
                                         accept="image/*"
                                         (change)="onFileChange($event)">
                                     <div *ngIf="Leladd.controls['imginp'].touched && Leladd.controls['imginp'].invalid" class="alert alert-danger">
@@ -218,10 +218,10 @@
                                         <div >File must be maximum of 5</div>
                                     </div>
                                 </div>
-                             
+
                                 <img *ngFor='let url of images'  [src]="url" height="150" width="200px" style="margin: 3px;"> <br/>
 
-                                
+
 
                                 <button type="submit" class="btn btn-primary btn-sm w-100 mt-3"
                                     >Simpan</button>
