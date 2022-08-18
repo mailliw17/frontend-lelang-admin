@@ -36,7 +36,8 @@
               "src/assets/js/plugins/chartjs.min.js",
               "src/assets/js/jquery-3.5.1.js",
               "src/assets/js/argon-dashboard.js",
-              "src/assets/js/upload-image.js"
+              "src/assets/js/upload-image.js",
+              "node_modules/jquery/dist/jquery.js"
             ]
           },
           "configurations": {

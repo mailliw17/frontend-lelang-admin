@@ -108,8 +108,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     FormsModule,
     MatProgressSpinnerModule,
-    FontAwesomeModule,
-
+    FontAwesomeModule
   ],
   providers: [
     authInterceptorProviders,
