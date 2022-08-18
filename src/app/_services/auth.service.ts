@@ -36,7 +36,7 @@ export class AuthService {
       },
       httpOptions
     );
-    
+
   }
 
   logout(): Observable<any> {
@@ -48,5 +48,5 @@ export class AuthService {
     })
 
   }
- 
+
 }
