@@ -15,6 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { DATE_PIPE_DEFAULT_TIMEZONE } from '@angular/common';
+import { CurrencyMaskInputMode } from 'ngx-currency';
 
 function validatedate(c: FormControl) {
   var now = new Date();
@@ -35,6 +36,7 @@ function validatedate(c: FormControl) {
   styleUrls: ['./lot-lelang-tambah.component.css'],
 })
 export class LotLelangTambahComponent implements OnInit {
+
   validateall(form: FormGroup) {
     var a: any = this.Leladd.controls['leljoinenddate']?.value; //waktu selesai lelang
     var b: any = this.Leladd.controls['lelbidstart']?.value; //waktu mulai lelang
@@ -58,6 +60,8 @@ export class LotLelangTambahComponent implements OnInit {
         };
   }
 
+  options = { prefix: 'Rp. ' ,thousands: '.', decimal: ',', allowZero: true,
+  inputMode: CurrencyMaskInputMode.FINANCIAL, nullable: true, precision: 0 };
   progress: number = 0;
   images: string[] = [];
   tempimg: any[] = [];

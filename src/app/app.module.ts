@@ -53,6 +53,7 @@ import { AkunPenjualTambahComponent } from './components/akun-penjual-tambah/aku
 import { AkunPenjualEditComponent } from './components/akun-penjual-edit/akun-penjual-edit.component';
 import { ValidasiBerkasCekComponent } from './components/validasi-berkas-cek/validasi-berkas-cek.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     FormsModule,
     MatProgressSpinnerModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxCurrencyModule
   ],
   providers: [
     authInterceptorProviders,

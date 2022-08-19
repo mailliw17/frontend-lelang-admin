@@ -8,6 +8,7 @@ import { LelangDataService } from 'src/app/_services/lelang-data.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
+import { CurrencyMaskInputMode } from 'ngx-currency';
 
 
 
@@ -53,6 +54,9 @@ export class LotLelangEditComponent implements OnInit {
 
     }
   }
+
+  options = { prefix: 'Rp. ' ,thousands: '.', decimal: ',', allowZero: true,
+  inputMode: CurrencyMaskInputMode.FINANCIAL, nullable: true, precision: 0 };
 
   selected = 'domain';
   Leledit: FormGroup= new FormGroup({
