@@ -28,8 +28,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Nilai Limit</label>
-                                            <input type="number" class="form-control" name="lelinitialprice" formControlName="lelinitialprice"
-                                                #lelinitialprice>
+                                            <input class="form-control" name="lelinitialprice" formControlName="lelinitialprice"
+                                                #lelinitialprice currencyMask [options]="options">
                                         </div>
                                         <div *ngIf="Leladd.controls['lelinitialprice'].invalid && Leladd.controls['lelinitialprice'].touched" class="alert alert-danger">
                                             <div *ngIf="Leladd.controls['lelinitialprice'].errors?.required">
@@ -60,7 +60,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleFormControlInput1">Nilai Jaminan</label>
-                                            <input type="number" class="form-control" name="lelcolaqty" #lelcolaqty formControlName="lelcolaqty">
+                                            <input class="form-control" name="lelcolaqty" #lelcolaqty formControlName="lelcolaqty" currencyMask [options]="options">
                                         </div>
                                         <div *ngIf="Leladd.controls['lelcolaqty'].invalid && Leladd.controls['lelcolaqty'].touched" class="alert alert-danger">
                                             <div *ngIf="Leladd.controls['lelcolaqty'].errors?.required">
