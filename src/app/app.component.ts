@@ -10,34 +10,35 @@ import { SpinnerService } from './_services/spinner.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'real-estate-admin'
+  title = 'real-estate-admin';
 
   constructor(
     public spinner: SpinnerService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title
-    ) {  }
+  ) {}
 
-    getChild(activatedRoute: ActivatedRoute) : any {
-      if (activatedRoute.firstChild) {
-        return this.getChild(activatedRoute.firstChild);
-      } else {
-        return activatedRoute;
-      }
+  getChild(activatedRoute: ActivatedRoute): any {
+    if (activatedRoute.firstChild) {
+      return this.getChild(activatedRoute.firstChild);
+    } else {
+      return activatedRoute;
     }
+  }
 
-    ngOnInit() {
-      this.router.events.pipe(
-          filter(event => event instanceof NavigationEnd),
-        ).subscribe(() => {
-          const rt = this.getChild(this.activatedRoute);
-          rt.data.subscribe((data: { title: string; }) => {
-            console.log(data);
-            this.titleService.setTitle(data.title)});
+  ngOnInit() {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const rt = this.getChild(this.activatedRoute);
+        rt.data.subscribe((data: { title: string }) => {
+          // console.log(data);
+          this.titleService.setTitle(data.title);
         });
-    }
+      });
+  }
 }

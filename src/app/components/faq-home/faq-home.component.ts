@@ -8,26 +8,23 @@ import { SpinnerService } from '../../_services/spinner.service';
 import Swal from 'sweetalert2';
 import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-
 export interface FAQ {
-  id: string,
-  question: string,
-  answer: string,
-  dateCreated: string,
-  createdBy: string,
-  dateUpdated: string,
-  updatedBy: string,
-  dateDeleted: string,
-  deletedBy: string,
-  isActive: boolean
+  id: string;
+  question: string;
+  answer: string;
+  dateCreated: string;
+  createdBy: string;
+  dateUpdated: string;
+  updatedBy: string;
+  dateDeleted: string;
+  deletedBy: string;
+  isActive: boolean;
 }
-
-
 
 @Component({
   selector: 'app-faq-home',
   templateUrl: './faq-home.component.html',
-  styleUrls: ['./faq-home.component.css']
+  styleUrls: ['./faq-home.component.css'],
 })
 export class FaqHomeComponent implements OnInit {
   faEdit = faPencilAlt;
@@ -39,8 +36,11 @@ export class FaqHomeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-
-  constructor(private faqserv: FAQDataService ,private route:Router, public spinner:SpinnerService) { }
+  constructor(
+    private faqserv: FAQDataService,
+    private route: Router,
+    public spinner: SpinnerService
+  ) {}
 
   deleteFAQ(id: string) {
     Swal.fire({
@@ -50,37 +50,33 @@ export class FaqHomeComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.value) {
-        this.faqserv.deleteFAQ(id).subscribe(()=>{
-          this.getFAQ()
+        this.faqserv.deleteFAQ(id).subscribe(() => {
+          this.getFAQ();
         });
       } else {
-        Swal.fire(
-          'Cancelled',
-          'Your FAQ is safe :)',
-          'error'
-        )
+        Swal.fire('Cancelled', 'Your FAQ is safe :)', 'error');
       }
     });
   }
 
   ngOnInit(): void {
     this.spinner.isLoading = true;
-    this.getFAQ()
+    this.getFAQ();
   }
 
-  getFAQ():void {
-    this.faqserv.getFAQ().subscribe(arr => {
-      console.log()
-      var z: any = arr
-      this.faq_array = z.faqs
-      this.dataSource = new MatTableDataSource(this.faq_array)
-      this.dataSource.paginator = this.paginator
-      this.dataSource.sort = this.sort
+  getFAQ(): void {
+    this.faqserv.getFAQ().subscribe((arr) => {
+      // console.log()
+      var z: any = arr;
+      this.faq_array = z.faqs;
+      this.dataSource = new MatTableDataSource(this.faq_array);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       this.spinner.isLoading = false;
-    })
+    });
   }
 
   applyFilter(event: Event) {
@@ -91,5 +87,4 @@ export class FaqHomeComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
 }
