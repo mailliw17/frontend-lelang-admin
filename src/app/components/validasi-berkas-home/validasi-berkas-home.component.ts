@@ -8,26 +8,31 @@ import { SpinnerService } from 'src/app/_services/spinner.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import Swal from 'sweetalert2';
 
-const GET_ALL_API = 'http://10.1.137.50:8761/approval/getAll'
-
+const GET_ALL_API = 'http://10.1.137.50:8761/approval/getAll';
 
 @Component({
   selector: 'app-validasi-berkas-home',
   templateUrl: './validasi-berkas-home.component.html',
-  styleUrls: ['./validasi-berkas-home.component.css']
+  styleUrls: ['./validasi-berkas-home.component.css'],
 })
 export class ValidasiBerkasHomeComponent implements OnInit {
-
   // token for get anything data
   httpOptions_base = {
     headers: new HttpHeaders().set(
-      "Authorization",
+      'Authorization',
       `Bearer ${this.token.getToken()}`
-    )
-  }
+    ),
+  };
 
-  displayedColumns: string[] = ['namaLengkap','phoneNum', 'email','ktp','npwp','action'];
-  dataSource !: MatTableDataSource<any>;
+  displayedColumns: string[] = [
+    'namaLengkap',
+    'phoneNum',
+    'email',
+    'ktp',
+    'npwp',
+    'action',
+  ];
+  dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -37,11 +42,11 @@ export class ValidasiBerkasHomeComponent implements OnInit {
     private router: Router,
     private token: TokenStorageService,
     private spinner: SpinnerService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.spinner.isLoading = true
-    this.getAllData()
+    this.spinner.isLoading = true;
+    this.getAllData();
   }
 
   applyFilter(event: Event) {
@@ -54,22 +59,22 @@ export class ValidasiBerkasHomeComponent implements OnInit {
   }
 
   getAllData() {
-    this.http.get<any>(GET_ALL_API, this.httpOptions_base)
-      .subscribe(isi => {
-        this.dataSource = new MatTableDataSource(isi.content)
-        this.dataSource.paginator = this.paginator
-        this.dataSource.sort = this.sort
-        this.spinner.isLoading = false
+    this.http.get<any>(GET_ALL_API, this.httpOptions_base).subscribe(
+      (isi) => {
+        this.dataSource = new MatTableDataSource(isi.content);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.spinner.isLoading = false;
       },
-        err => {
-          this.spinner.isLoading = false
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong!',
-          })
-          console.log(err)
-        }
-      )
+      (err) => {
+        this.spinner.isLoading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+        console.log(err);
+      }
+    );
   }
 }

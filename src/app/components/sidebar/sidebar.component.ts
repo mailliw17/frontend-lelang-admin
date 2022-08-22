@@ -10,34 +10,32 @@ import { User } from './user';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
-  currentUser: any
+  currentUser: any;
 
   constructor(
     private token: TokenStorageService,
     private router: Router,
-    private auth : AuthService,
-    private profile: ProfileService) { }
+    private auth: AuthService,
+    private profile: ProfileService
+  ) {}
 
   ngOnInit(): void {
-    const userData = this.profile.getUserData()
-      .subscribe(isi => {
+    const userData = this.profile.getUserData().subscribe(
+      (isi) => {
         this.token.saveUser(isi);
-        //lempar currentUser ke view 
-        this.currentUser = this.token.getUser()
+        //lempar currentUser ke view
+        this.currentUser = this.token.getUser();
       },
-        err => {
-          console.log('error bro')
-        }
-      )
-
-
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   logout(): void {
-
     this.auth.logout().subscribe(
       (isi) => {
         this.token.signOut();
@@ -46,9 +44,6 @@ export class SidebarComponent implements OnInit {
       (err) => {
         console.log(err);
       }
-
     );
-
   }
-
 }
