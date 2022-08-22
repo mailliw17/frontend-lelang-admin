@@ -3,7 +3,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 
 import { FormsModule } from '@angular/forms';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -89,7 +89,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
     AkunPenjualHomeComponent,
     AkunPenjualTambahComponent,
     AkunPenjualEditComponent,
-    ValidasiBerkasCekComponent
+    ValidasiBerkasCekComponent,
   ],
   imports: [
     BrowserModule,
@@ -110,12 +110,9 @@ import { NgxCurrencyModule } from 'ngx-currency';
     FormsModule,
     MatProgressSpinnerModule,
     FontAwesomeModule,
-    NgxCurrencyModule
+    NgxCurrencyModule,
   ],
-  providers: [
-    authInterceptorProviders,
-    Title
-  ],
-  bootstrap: [AppComponent]
+  providers: [authInterceptorProviders, Title],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
